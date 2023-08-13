@@ -3,6 +3,7 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { BiSolidLogOut } from "react-icons/bi";
 
 const LogoutButton = () => {
   const router = useRouter();
@@ -16,7 +17,7 @@ const LogoutButton = () => {
   };
   return (
     <button className="btn-warning" onClick={handleLogout}>
-      Logout
+      <BiSolidLogOut /> Logout
     </button>
   );
 };

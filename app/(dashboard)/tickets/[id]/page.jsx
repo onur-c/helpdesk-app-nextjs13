@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import DeleteButton from "@/app/components/DeleteButton";
 
 export const dynamicParams = true;
 
@@ -48,12 +49,22 @@ const getTicket = async (id) => {
 };
 
 const TicketDetail = async ({ params }) => {
+  const supabase = createServerComponentClient({ cookies });
+  const { data } = await supabase.auth.getSession();
   const id = params.id;
   const ticket = await getTicket(id);
   return (
     <main>
-      <h2>Ticket Details</h2>
+      <h1 className="text-3xl">Ticket Details</h1>
       <div className="card">
+        <div className="ml-auto">
+          {data.session.user.email === ticket.user_email && (
+            <DeleteButton
+              id={ticket.id}
+              classNames="btn-warning absolute top-0 right-0"
+            />
+          )}
+        </div>
         <h3>{ticket.title}</h3>
         <small>Created by {ticket.user_email}</small>
         <p>{ticket.body}</p>
