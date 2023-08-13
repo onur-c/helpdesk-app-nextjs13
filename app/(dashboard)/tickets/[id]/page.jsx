@@ -1,35 +1,50 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
-export async function generateStaticParams() {
-  const res = await fetch("http://localhost:4000/tickets");
+export const dynamicParams = true;
 
-  const tickets = await res.json();
+// export async function generateStaticParams() {
 
-  return tickets.map((ticket) => ({
-    id: `${ticket.id}`,
-  }));
-}
+//   const res = await fetch("http://localhost:4000/tickets");
+
+//   const tickets = await res.json();
+
+//   return tickets.map((ticket) => ({
+//     id: `${ticket.id}`,
+//   }));
+// }
 
 export async function generateMetadata({ params }) {
   const id = params.id;
-  const res = await fetch(`http://localhost:4000/tickets/${id}`);
-  const { title } = await res.json();
+  const { title } = await getTicket(id);
 
   return {
-    title: `${title} | O-dev Helpdesk `,
+    title: `${title || "Not Found"} | O-dev Helpdesk `,
   };
 }
 
 const getTicket = async (id) => {
-  const res = await fetch(`http://localhost:4000/tickets/${id}`, {
-    next: {
-      revalidate: 100,
-    },
-  });
-  if (!res.ok) notFound();
+  const res = await fetch(`http://localhost:3000/api/tickets/${id}`);
 
-  return res.json();
+  if (!res.ok) {
+    notFound();
+  }
+
+  const data = await res.json();
+
+  // const supabase = createServerComponentClient({ cookies });
+
+  // const { data, error } = await supabase
+  //   .from("tickets")
+  //   .select()
+  //   .eq("id", id)
+  //   .single();
+
+  // if (error || !data) notFound();
+
+  return data;
 };
 
 const TicketDetail = async ({ params }) => {

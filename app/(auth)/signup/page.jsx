@@ -21,7 +21,9 @@ const SignupPage = () => {
     if (error) {
       setFormError(error.message);
     }
-    router.push("/verify");
+    if (!error) {
+      router.push("/verify");
+    }
   };
 
   return (

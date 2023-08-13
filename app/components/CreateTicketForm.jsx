@@ -1,8 +1,10 @@
+"use client";
 import { useRouter } from "next/navigation";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
-const CreateForm = () => {
+const CreateTicketForm = () => {
   const router = useRouter();
+
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [priority, setPriority] = useState("low");
@@ -16,10 +18,9 @@ const CreateForm = () => {
       title,
       body,
       priority,
-      user_email: "onurccelik1@gmail.com",
     };
 
-    const res = await fetch("http://localhost:4000/tickets", {
+    const res = await fetch("http://localhost:3000/api/tickets", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -27,7 +28,13 @@ const CreateForm = () => {
       body: JSON.stringify(ticket),
     });
 
-    if (res.status === 201) {
+    const json = await res.json();
+
+    if (json.error) {
+      console.log(json.error.message);
+    }
+
+    if (json.data) {
       router.refresh();
       router.push("/tickets");
     }
@@ -71,4 +78,4 @@ const CreateForm = () => {
   );
 };
 
-export default CreateForm;
+export default CreateTicketForm;

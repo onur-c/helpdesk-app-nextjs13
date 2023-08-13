@@ -1,31 +1,36 @@
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import React from "react";
 
 const getTickets = async () => {
-  // await new Promise((resolve) => setTimeout(resolve, 3000));
-  const res = await fetch("http://localhost:4000/tickets", {
-    next: {
-      revalidate: 0,
-    },
-  });
-  return res.json();
+  const res = await fetch(`http://localhost:3000/api/tickets`);
+  if (!res.ok) {
+    notFound();
+  }
+
+  const data = await res.json();
+
+  return data;
 };
 
 const TicketList = async () => {
   const tickets = await getTickets();
   return (
     <div>
-      {tickets.map((ticket) => (
-        <Link key={ticket.id} href={`/tickets/${ticket.id}`}>
-          <div className="card my-5">
-            <h3>{ticket.title}</h3>
-            <p>{ticket.body.slice(0, 200)}...</p>
-            <div className={`pill ${ticket.priority}`}>
-              {ticket.priority} priority
+      {tickets &&
+        tickets.map((ticket) => (
+          <Link key={ticket.id} href={`/tickets/${ticket.id}`}>
+            <div className="card my-5">
+              <h3>{ticket.title}</h3>
+              <p>{ticket.body.slice(0, 200)}...</p>
+              <div className={`pill ${ticket.priority}`}>
+                {ticket.priority} priority
+              </div>
             </div>
-          </div>
-        </Link>
-      ))}
+          </Link>
+        ))}
       {tickets.length === 0 && <p className="text-center">No open tickets.</p>}
     </div>
   );
