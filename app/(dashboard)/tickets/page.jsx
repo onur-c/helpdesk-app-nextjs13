@@ -1,6 +1,8 @@
 import React, { Suspense } from "react";
 import TicketList from "./TicketList";
 import Loading from "../loading";
+import Link from "next/link";
+import { IoIosCreate } from "react-icons/io";
 
 export const metadata = {
   title: "Tickets | O-dev Helpdesk",
@@ -10,10 +12,20 @@ export const metadata = {
 const Tickets = () => {
   return (
     <main>
-      <div>
-        <h2>Tickets</h2>
-        <p>Currently open tickets.</p>
+      <div className="flex">
+        <div>
+          <h2 className="text-3xl">Tickets</h2>
+          <p>Currently open tickets.</p>
+        </div>
+
+        <Link href="/tickets/create" className="ml-auto">
+          <button className="btn-primary p-3 text-lg">
+            <IoIosCreate />
+            Create Ticket
+          </button>
+        </Link>
       </div>
+
       <Suspense fallback={<Loading />}>
         <TicketList />
       </Suspense>

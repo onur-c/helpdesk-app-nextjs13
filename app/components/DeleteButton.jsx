@@ -26,7 +26,7 @@ const DeleteButton = ({ id, classNames }) => {
         "Deleting..."
       ) : (
         <>
-          <MdDeleteForever /> "Delete"
+          <MdDeleteForever /> Delete
         </>
       )}
     </button>

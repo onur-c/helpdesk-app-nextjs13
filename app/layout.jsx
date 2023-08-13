@@ -2,7 +2,7 @@ import "./globals.css";
 import { Quicksand } from "next/font/google";
 // components
 
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
