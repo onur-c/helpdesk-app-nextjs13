@@ -31,7 +31,6 @@ export async function GET() {
   const { data: dataDB, error: errorDB } = await supabase
     .from("tickets")
     .select();
-
   if (errorDB) {
     return NextResponse.json(
       {

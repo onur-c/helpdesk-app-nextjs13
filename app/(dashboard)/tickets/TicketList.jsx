@@ -5,6 +5,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 const getTickets = async () => {
   const res = await fetch(`http://localhost:3000/api/tickets`, {
     next: {
@@ -32,7 +34,7 @@ const TicketList = async () => {
             <Link key={ticket.id} href={`/tickets/${ticket.id}`}>
               <div className="card my-5">
                 <h3 className="flex">
-                  {ticket.title}&nbsp;{" "}
+                  {ticket.title}&nbsp;
                   {data.session.user.email === ticket.user_email && (
                     <span className="opacity-60 italic ml-auto">
                       (created by you)

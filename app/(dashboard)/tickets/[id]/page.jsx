@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import DeleteButton from "@/app/components/DeleteButton";
 
 export const dynamicParams = true;
+export const dynamic = "force-dynamic";
 
 // export async function generateStaticParams() {
 
@@ -27,7 +28,9 @@ export async function generateMetadata({ params }) {
 }
 
 const getTicket = async (id) => {
-  const res = await fetch(`http://localhost:3000/api/tickets/${id}`);
+  const res = await fetch(`http://localhost:3000/api/tickets/${id}`, {
+    cache: "no-cache",
+  });
 
   if (!res.ok) {
     notFound();
